@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Acesso Bloqueado - Auth Blocker</title>
+    <style>
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #0f172a;
+        color: #f8fafc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 24px;
+        box-sizing: border-box;
+      }
+      .card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 16px;
+        padding: 36px;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+      .badge {
+        display: inline-block;
+        padding: 4px 10px;
+        background: #dc2626;
+        color: #ffffff;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        border-radius: 9999px;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+      h1 {
+        font-size: 22px;
+        margin: 0 0 8px 0;
+        word-break: break-all;
+      }
+      p {
+        color: #94a3b8;
+        font-size: 14px;
+        line-height: 1.5;
+        margin: 0 0 24px 0;
+      }
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 14px;
+        font-size: 24px;
+        text-align: center;
+        letter-spacing: 8px;
+        background: #0f172a;
+        border: 1px solid #475569;
+        border-radius: 8px;
+        color: #ffffff;
+        margin-bottom: 16px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      input:focus {
+        border-color: #3b82f6;
+      }
+      button {
+        width: 100%;
+        padding: 14px;
+        background: #2563eb;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      button:hover {
+        background: #1d4ed8;
+      }
+      .error {
+        color: #f87171;
+        font-size: 13px;
+        margin-top: 12px;
+        display: none;
+      }
+      .back-action {
+        margin-top: 20px;
+        font-size: 13px;
+        color: #64748b;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      .back-action:hover {
+        color: #94a3b8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="badge">Bloqueado</div>
+      <h1 id="domain-label">Site Restrito</h1>
+      <p>Este domínio requer autenticação em duas etapas para ser acessado.</p>
+
+      <input
+        type="text"
+        id="token-input"
+        maxlength="6"
+        placeholder="000000"
+        autocomplete="off"
+        autofocus
+      />
+      <button id="submit-btn">Liberar Acesso</button>
+      <div class="error" id="error-msg">
+        Código inválido ou expirado. Tente novamente.
+      </div>
+
+      <div class="back-action" id="cancel-btn">Voltar e não acessar</div>
+    </div>
+
+    <script src="totp.js"></script>
+    <script src="blocked.js"></script>
+  </body>
+</html>

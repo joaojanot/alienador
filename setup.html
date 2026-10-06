@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Configuração - Auth Blocker</title>
+    <style>
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #f8fafc;
+        color: #0f172a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 24px;
+        box-sizing: border-box;
+      }
+      .card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 32px;
+        max-width: 440px;
+        width: 100%;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      h1 {
+        font-size: 20px;
+        margin-top: 0;
+        margin-bottom: 6px;
+      }
+      .subtitle {
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 20px;
+      }
+
+      /* Abas de seleção de modo */
+      .tabs {
+        display: flex;
+        border-bottom: 1px solid #e2e8f0;
+        margin-bottom: 20px;
+      }
+      .tab-btn {
+        flex: 1;
+        padding: 10px;
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        font-size: 13px;
+        font-weight: 500;
+        color: #64748b;
+        cursor: pointer;
+      }
+      .tab-btn.active {
+        color: #2563eb;
+        border-bottom-color: #2563eb;
+      }
+
+      .tab-pane {
+        display: none;
+      }
+      .tab-pane.active {
+        display: block;
+      }
+
+      p {
+        color: #475569;
+        font-size: 13px;
+        line-height: 1.5;
+        margin-bottom: 16px;
+      }
+      #qrcode-container {
+        display: flex;
+        justify-content: center;
+        margin: 16px 0;
+      }
+      #qrcode-container img {
+        border: 8px solid #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+      }
+      .secret-box {
+        background: #f1f5f9;
+        border-radius: 6px;
+        padding: 10px;
+        font-family: monospace;
+        font-size: 14px;
+        letter-spacing: 2px;
+        word-break: break-all;
+        margin-bottom: 16px;
+        color: #1e293b;
+        user-select: all;
+      }
+      .text-input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        margin-bottom: 14px;
+        outline: none;
+        text-transform: uppercase;
+        font-family: monospace;
+        text-align: center;
+      }
+      .text-input:focus {
+        border-color: #2563eb;
+      }
+      .token-input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        font-size: 18px;
+        text-align: center;
+        letter-spacing: 6px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        margin-bottom: 14px;
+        outline: none;
+      }
+      .token-input:focus {
+        border-color: #2563eb;
+      }
+      button.submit-btn {
+        width: 100%;
+        padding: 12px;
+        background: #2563eb;
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      button.submit-btn:hover {
+        background: #1d4ed8;
+      }
+      .error {
+        color: #dc2626;
+        font-size: 12px;
+        margin-top: 10px;
+        display: none;
+      }
+      .copy-hint {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: -10px;
+        margin-bottom: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Configurar Autenticador</h1>
+      <div class="subtitle">Use o mesmo 2FA em todos os seus computadores</div>
+
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-btn-create">
+          Gerar Novo QR Code
+        </button>
+        <button class="tab-btn" id="tab-btn-import">
+          Importar Chave Existente
+        </button>
+      </div>
+
+      <!-- Aba 1: Criar / Exibir Atual -->
+      <div class="tab-pane active" id="pane-create">
+        <p>
+          Escaneie o código com o Google Authenticator ou copie a chave secreta
+          para usar em outro computador:
+        </p>
+        <div id="qrcode-container"></div>
+        <div class="secret-box" id="secret-text">Carregando...</div>
+        <div class="copy-hint">(Clique duas vezes para copiar a chave)</div>
+
+        <p style="font-size: 12px; margin-bottom: 6px">
+          Digite o código de 6 dígitos para testar e ativar:
+        </p>
+        <input
+          type="text"
+          id="token-input-create"
+          class="token-input"
+          maxlength="6"
+          placeholder="000000"
+          autocomplete="off"
+        />
+        <button class="submit-btn" id="verify-btn-create">
+          Confirmar e Ativar
+        </button>
+        <div class="error" id="error-create">
+          Código incorreto. Verifique o horário do celular.
+        </div>
+      </div>
+
+      <!-- Aba 2: Importar Existente -->
+      <div class="tab-pane" id="pane-import">
+        <p>
+          Cole a chave secreta gerada na sua outra máquina (ex: 16 caracteres
+          alfanuméricos):
+        </p>
+        <input
+          type="text"
+          id="import-secret-input"
+          class="text-input"
+          placeholder="Cole a chave Base32 aqui"
+          autocomplete="off"
+        />
+
+        <p style="font-size: 12px; margin-bottom: 6px">
+          Digite o código de 6 dígitos atual do app:
+        </p>
+        <input
+          type="text"
+          id="token-input-import"
+          class="token-input"
+          maxlength="6"
+          placeholder="000000"
+          autocomplete="off"
+        />
+        <button class="submit-btn" id="verify-btn-import">
+          Validar e Sincronizar
+        </button>
+        <div class="error" id="error-import">
+          Chave inválida ou código TOTP incorreto.
+        </div>
+      </div>
+    </div>
+
+    <script src="totp.js"></script>
+    <script src="setup.js"></script>
+  </body>
+</html>

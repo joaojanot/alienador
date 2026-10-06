@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Auth Blocker",
+  "version": "1.0",
+  "description": "Bloqueia sites distrativos e exige autenticação 2FA (TOTP) para liberar o acesso.",
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Configurar Auth Blocker"
+  }
+}
